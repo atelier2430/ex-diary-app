@@ -1,12 +1,13 @@
 import styled from 'styled-components'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 
 import Title from '../components/shared/Title'
 import WriteButton from '../components/list/WriteButton'
 import FilterTab from '../components/list/FilterTab'
 import MemoList from '../components/list/MemoList'
+import { useFilterContext } from '../contexts/filter'
 
-import { MOCKS } from '../constants'
+// import { MOCKS } from '../constants'
 
 const TitleContainer = styled.div`
   position: relative;
@@ -21,6 +22,9 @@ const TitleContainer = styled.div`
 const ListPage = () => {
   // 일기(메모)에 대한 정보를 가지고 있는 리스트
   const [diaries, setDiaries] = useState([])
+
+  // 새로고침시에도 유지하려면 로컬스토리지 사용할 것
+  const { filter, setFilter } = useFilterContext()
 
   // class 컴포넌트는 componentDidMount 이라는 라이프사이클이 있음
   // 함수형 컴포넌트에는 라이프사이클이 없음 -> useEffect 사용
@@ -37,6 +41,41 @@ const ListPage = () => {
     setDiaries(diaries)
   }, [])
 
+  const handleFilterClick = (filterType) => {
+    setFilter(filterType)
+  }
+
+  /*
+   * useMemo(콜백, 감시대상)
+   * 감시대상이 바뀌지 않으면 콜백은 동작하지 않음
+   */
+  const filteredDiaries = useMemo(() => {
+    // filter: ALL, SAD, GOOD, AWESOME
+    switch (filter) {
+      case 'ALL': {
+        return diaries
+      }
+      case 'SAD': {
+        return diaries.filter((diary) => {
+          return diary.emotion === 'SAD'
+        })
+      }
+      case 'GOOD': {
+        return diaries.filter((diary) => {
+          return diary.emotion === 'GOOD'
+        })
+      }
+      case 'AWESOME': {
+        return diaries.filter((diary) => {
+          return diary.emotion === 'AWESOME'
+        })
+      }
+      default: {
+        return diaries
+      }
+    }
+  }, [filter, diaries])
+
   return (
     <div>
       <TitleContainer>
@@ -46,8 +85,8 @@ const ListPage = () => {
         />
         <WriteButton />
       </TitleContainer>
-      <FilterTab />
-      <MemoList items={diaries} />
+      <FilterTab selectedFilter={filter} onClick={handleFilterClick} />
+      <MemoList items={filteredDiaries} />
     </div>
   )
 }

@@ -30,12 +30,22 @@ const Menu = styled.li`
       }
   `}
 `
-const FilterTab = () => {
+const FilterTab = ({ selectedFilter, onClick }) => {
   return (
     <div>
       <Container>
         {Object.entries(FILTER_LABELS).map(([type, label]) => {
-          return <Menu key={type}>{label}</Menu>
+          return (
+            <Menu
+              key={type}
+              active={selectedFilter === type}
+              onClick={() => {
+                onClick(type)
+              }}
+            >
+              {label}
+            </Menu>
+          )
         })}
         <Menu />
       </Container>
