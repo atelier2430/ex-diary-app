@@ -1,0 +1,68 @@
+State : 상태값. 내가 가진 값
+Props : 외부(위)에서 (물려)받은 값
+
+1. 상태값은 항상 위->아래로 흐른다. (한번에 한단계)
+2. 형제끼리는 상태값을 교환할 수 없다.
+3. 상태값이 변하면 화면을 새로 그린다.
+  - 상태값과 관련된 모든 컴포넌트
+
+글로벌 상태 관리자 (Redux, Context API, Mobx, )
+
+
+useState 사용법
+=> const [상태값, 상태값을 변경할 수 있는 함수] = useState()
+
+
+*단방향 데이터 바인딩
+A->B
+B의 데이터가 바뀌어도 A에는 영향이 없음
+
+*양방향 데이터 바인딩
+A<->B
+A, B의 데이터가 바뀌면 서로에게 영향을 줌
+=> 기본적으로 react는 돔에 직접 접근하는 것을 좋아하지 않음
+-> 폼 내용을 리셋할 필요가 있을 때, 돔(input 등)의 value를 직접 비우기보다
+   양방향으로 연결된 state를 비워줌
+
+
+props 를 전달받을 때 해체할당자(구조분해할당)를 이용함
+1.
+const Box = (props) => {
+  const { width, height, color, text } = props
+  
+  return (
+    <div>
+      {width},{height},{color},{text}
+    </div>
+  )
+}
+
+2.
+const Box = ({ width, height, color, text }) => {
+  return (
+    <div>
+      {width},{height},{color},{text}
+    </div>
+  )
+}
+
+
+css in js
+특정 컴포넌트가 컴포넌트에서 필요한 스타일을 가지도록 할 수 있다.
+(본인한테 필요한 스타일만 가질 수 있다)
+
+1. 클래스 네이밍 고민 필요 없음
+2. 우선순위 고려하지 않아도 됨 -> 컴포넌트 레벨의 스코프
+3. 유지보수 편리 -> 해당 컴포넌트의 스타일만 보면 됨!
+
+styled-Component 사용법
+stlyed.<태그>
+ex.
+styled.div`
+  color: red;
+`
+=>
+<div style="color:red;"></div>
+
+js문법 내에서의 스타일 -> 카멜케이스 / textAlign: 'center'
+styled-component 내에서의 스타일 -> 기본 css 문법 / text-align: center;

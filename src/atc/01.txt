@@ -1,0 +1,117 @@
+브라우저 렌더링
+- dom tree: 돔에 접근 할 수 있게 도와주는 객체 (화면에 그리는 용도 X)
+- render tree: 화면에 그리기 위한 객체
+- 가상돔은 dom tree 를 복사한 것
+
+
+1. 브라우저가 html태그를 파싱하여 돔트리를 구성한다.
+  +스타일시트에서 css를 파싱하여 스타일 규칙을 만들어낸다.
+2. 돔트리와 스타일규칙이 합쳐져서 렌더트리를 만들어낸다.
+렌더트리는 화면에 반영되는 것만 가지고 있음/돔트리는 HTML의 모든 정보 => 돔트리와 일대일 관계 X
+=>렌더트리에는 없고 돔트리에는 있을 수 있음
+
+프론트엔드 프레임워크(라이브러리)의 필요성
+- jQuery는 실제 DOM에만 접근이 가능함 (한계)
+-> 돔에 변경이 있을때마다 실시간으로 다시 그려짐(렌더링)
+
+DOM트리 : 돔에 접근하기 위한 객체
+렌더트리 : 화면에 그리기 위한 객체
+
+가상DOM트리 : DOM트리의 복사본
+-> <img>의 사이즈 변경
+--> 가상DOM트리에 기록 (<img>의 사이즈가 변경됨)
+-> <div>의 높이 변경
+--> 가상DOM트리에 기록 (<div>의 높이 변경됨)
+=> 변경사항을 모아서 실제 브라우저에는 변화가 끝난 후 반영(다시 그림)
+=> 가상돔을 이용해 돔 수정을 한번만->렌더트리도 한번만 반영.
+
+모듈 번들러? Webpack?
+모듈(Module) : 특정 기능을 갖는 작은 코드 단위
+
+babel
+: 코드변환기. 웹팩이 모은 js파일을 babel이 변환함.
+
+Node, Npm 이란 ?
+- Node: 브라우저 외부에서 JS 를 실행 할 수 있는 환경
+- NPM:  노드 패지키를 관리해주는 매니저
+
+SPA, Babel, Webpack 이란 ?
+- 하나의 html, js 를 가진 어플리케이션
+- babel: 자바스크립트 코드를 변환해주는 트랜스파일러 (ex. es6 → es5 / jsx → js)
+- webpack: 자바스크립트 파일을 압축하거나 난독화하는등을 도와주는 파일단위를 다루는 모듈번들러
+
+React 란 ?
+- 가상돔을 사용한다.
+- 컴포넌트 단위로 ui 구성을 도와주는 라이브러리
+
+Create React App
+- 보일러 플레이트: 어느정도 환경이 구성된 프로젝트 (React 에서는 대표적으로 Create React App)
+- npx: 글로벌에 깔려 있지 않지만 글로벌에 있는 것처럼 실행하게 도와준다.
+<code>
+$ npx create-react-app <프로젝트이름>
+$ npx create-react-app myApp 
+</code>
+
+ES Lint, Prettier 구성
+- eslint: 코드 규칙을 정하고 규칙에 어긋난 코드를 검사해줌
+- prettier: 코드를 이쁘게 만들어줌
+
+import/export 모듈 시스템 이해하기
+<code>
+export default function foo() {}
+
+import foo from './foo' // 함수 자체를 받는다
+
+export const foo = () => {}
+import { foo } from './foo' // object 로 받는다. 해체할당을 이용하여 풀어서 받을 수 있다.
+</code>
+
+컴포넌트란 ?
+  컴포넌트를 만드는 2 가지 방법 비교
+  클래스 컴포넌트와 함수형 컴포넌트의 역할과 목적차이
+- 클래스형 컴포넌트는 상태 값과 라이프 사이클 (컴포넌트의 변화를 감지하는 함수) 을 가질 수 있습니다.
+- 함수형 컴포넌트는 상태 값을 가질 수 없고, 컴포넌트의 변화를 캐치 할 수 없었습니다. 
+그러나, 리액트 훅 이라는 것이 나오면서 함수형 컴포넌트도 클래스 컴포넌트가 할 수 있는 것들을 할 수 있어졌습니다. 요즘은 더 간단하고 흐름이 눈에 잘 보이는 함수형 컴포넌트 사용을 선호합니다. 
+<code>
+class App extends React.Component {} // class 컴포넌트 
+
+function App() {} // functional 컴포넌트
+</code>
+
+**용어정리**
+- jQuery 와 다르게 React 는 가상돔을 이용하여 돔의 변화를 처리한다.
+- NodeJS: 브라우저 외부에서 JS를 실행 할 수 있는 환경 (= 런타임 환경)
+- package.json: 프로젝트의 설명서 (버젼, 사용중인 패키지 등을 알 수 있다)
+  - node_modules 를 공유할 필요없이 npm install 을 하면 node_modules 를 생성 할 수 있다.
+  - dependencies: 서비스에서 필요한 패키지들
+  - dev dependencies: 개발단계에서 필요한 패키지들
+- ES Lint: 코드의 규칙을 정한다. 프로젝트 코드의 균일화 (.eslintrc 라는 설정파일을 추가해주어야한다)
+- Prettier: 코드 포맷 규칙을 정한다. ES Lint 와 함께 사용하면 규칙에 맞게 이쁘게 코드를 포맷팅 할 수 있다. (.prettierc 라는 설정파일을 추가해주어야한다.)
+
+####################################################################################################################
+
+Class 기반 컴포넌트
+- state 상태 값 가능
+- 라이프사이클 지원
+Function 기반 컴포넌트
+- state X
+- 라이플사이클 X
+
+React Hooks (<-함수형 컴포넌트에서도 state, 라이프사이클이 가능하도록)
+
+
+import - export 는 기본 세트.
+export한것을 import 해옴
+
+export default VS export
+
+1. export default는 값 자체를 내보냄.
+ex) 아래와 같음
+export default () => {
+  return <div>App</div>
+}
+
+2. export는 객체화해서 내보냄
+{ App: App }
+export로 내보낸 경우 주로 해체할당자를 이용해서 import함
+import { App } from "./App"
